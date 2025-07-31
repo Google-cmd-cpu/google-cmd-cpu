@@ -1,83 +1,244 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>google-cmd-cpu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      color: white;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      text-align: center;
-      min-height: 100vh;
-      background-color: black;
-    }
-    #splash {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    #deviceChoice, #musicControl, #languageSelector, #backgroundSelector {
-      margin: 20px;
-    }
-    iframe.hidden {
-      display: none;
-    }
-    input[type="text"] {
-      padding: 6px;
-      width: 60%;
-    }
-    button {
-      font-size: 16px;
-      padding: 10px 20px;
-      margin: 10px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>google-cmd-cpu</title>
+<style>
+  body {
+    margin: 0; font-family: sans-serif; color: white;
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    min-height: 100vh;
+  }
+  #splash {
+    position: fixed; inset: 0;
+    background: black;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10000;
+  }
+  #deviceChoice, #mainContent, #musicControl {
+    margin: 20px auto; max-width: 800px;
+  }
+  #deviceChoice button, #musicControl button {
+    font-size: 24px; margin: 10px; padding: 10px 25px; cursor: pointer;
+  }
+  #languageSelector, #backgroundSelector {
+    margin: 20px auto; max-width: 800px;
+  }
+  select, input[type="text"], button {
+    font-size: 16px; padding: 6px 8px; margin: 5px;
+  }
+  iframe.chat {
+    width: 90%; height: 400px;
+    border: none; border-radius: 10px; margin: 20px auto; display: block;
+  }
+  iframe#ytMusic {
+    display: none;
+  }
+</style>
 </head>
 <body>
 
+<!-- Заставка -->
 <div id="splash">
-  <img src="https://i.imgur.com/YjyjiRj.gif" alt="Заставка" width="400">
+  <img src="https://gifdb.com/images/high/microsoft-windows-8-1-version-cvlt7i9x9ql6crvj.gif" alt="Заставка Windows 8.1" style="max-width:100%; max-height:100vh;" />
 </div>
 
-<h1>Добро пожаловать на google-cmd-cpu!</h1>
-<p>Создатель <strong>XQWERTVM</strong> — копии CollabVM</p>
-
-<div id="deviceChoice">
-  <p>Вы используете:</p>
-  <button onclick="chooseDevice('pc')">💻 Компьютер</button>
-  <button onclick="chooseDevice('mobile')">📲 Телефон(авто смарт неработает)</button>
+<!-- Выбор устройства -->
+<div id="deviceChoice" style="display:none;">
+  <h2 id="deviceTitle">Выберите устройство</h2>
+  <button id="btnPc" onclick="chooseDevice('pc')">💻 Компьютер</button>
+  <button id="btnMobile" onclick="chooseDevice('mobile')">📱 Телефон</button>
+  <button id="btnXbox" onclick="chooseDevice('xbox')">🎮 Xbox</button>
 </div>
 
+<!-- Кнопка включения музыки для телефона и Xbox -->
 <div id="musicControl" style="display:none;">
-  <button onclick="playMusic()">🎵 Включить музыку</button>
+  <button id="musicBtn" onclick="playMusic()">🎵 Включить музыку</button>
 </div>
 
-<iframe id="ytMusic" class="hidden" width="0" height="0" allow="autoplay" frameborder="0"></iframe>
+<!-- Основной контент сайта -->
+<div id="mainContent" style="display:none;">
+  <h1 id="title">Добро пожаловать на google-cmd-cpu!</h1>
+  <p id="desc">Создатель <strong>XQWERTVM</strong> — копии CollabVM</p>
 
-<div id="languageSelector">
-  <label>🌍 Выбор языка:
-    <select id="languageSelect" onchange="changeLanguage()">
-      <option value="ru">Русский</option>
-      <option value="en">English</option>
-      <option value="uk">Українська</option>
-      <option value="zipzizpipzpzpzpzzipzzo">zipzizpipzpzpzpzzipzzo</option>
-    </select>
-  </label>
+  <div id="languageSelector">
+    <label id="langLabel">🌍 Выбор языка:
+      <select id="languageSelect" onchange="changeLanguage()">
+        <option value="ru">Русский</option>
+        <option value="en">English</option>
+        <option value="uk">Українська</option>
+        <option value="zipzizpipzpzpzpzzipzzo">zipzizpipzpzpzpzzipzzo</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="backgroundSelector">
+    <label id="bgLabel">🖼️ Выбери фон:
+      <select onchange="changeBackground(this.value)">
+        <option value="">— Стандартный —</option>
+        <option value="https://d7hftxdivxxvm.cloudfront.net/?quality=80&amp;resize_to=width&amp;src=https%3A%2F%2Fartsy-media-uploads.s3.amazonaws.com%2F1E2blfmrxuSPUH-2oc08gw%252F14273043642_d63ded6c05_o%2B%25281%2529.png&amp;width=910">Картинка</option>
+      </select>
+    </label>
+    <br />
+    <input type="text" id="customBackground" placeholder="или вставь ссылку на свой фон" />
+    <button id="btnApply" onclick="applyCustomBackground()">Применить</button>
+    <button id="btnResetBg" onclick="resetBackground()">Сбросить фон</button>
+  </div>
+
+  <p><a id="qwertyLink" href="https://google-cmd-cpu.github.io/QwertyVM" target="_blank" rel="noopener">🌐 Перейти на QwertyVM</a></p>
+
+  <iframe class="chat" src="https://app.kosmi.io/room/@andrey7" allow="camera; microphone"></iframe>
 </div>
 
-<div id="backgroundSelector">
-  <label>🖼️ Выбери фон:
-    <select onchange="changeBackground(this.value)">
-      <option value="">— Стандартный —</option>
-      <option value="https://d7hftxdivxxvm.cloudfront.net/?quality=80&resize_to=width&src=https%3A%2F%2Fartsy-media-uploads.s3.a_
-        
+<!-- Скрытый YouTube плеер -->
+<iframe id="ytMusic" width="0" height="0" allow="autoplay" frameborder="0"></iframe>
+
+<script>
+  const translations = {
+    ru: {
+      welcome: "Добро пожаловать на google-cmd-cpu!",
+      description: "Создатель XQWERTVM — копии CollabVM",
+      chooseDevice: "Выберите устройство",
+      computer: "💻 Компьютер",
+      mobile: "📱 Телефон",
+      xbox: "🎮 Xbox",
+      chooseLang: "🌍 Выбор языка:",
+      chooseBg: "🖼️ Выбери фон:",
+      apply: "Применить",
+      resetBg: "Сбросить фон",
+      musicOn: "🎵 Включить музыку",
+      goToQwertyVM: "🌐 Перейти на QwertyVM"
+    },
+    en: {
+      welcome: "Welcome to google-cmd-cpu!",
+      description: "Creator of XQWERTVM — a CollabVM clone",
+      chooseDevice: "Choose your device",
+      computer: "💻 Computer",
+      mobile: "📱 Mobile",
+      xbox: "🎮 Xbox",
+      chooseLang: "🌍 Select language:",
+      chooseBg: "🖼️ Choose background:",
+      apply: "Apply",
+      resetBg: "Reset background",
+      musicOn: "🎵 Play music",
+      goToQwertyVM: "🌐 Go to QwertyVM"
+    },
+    uk: {
+      welcome: "Ласкаво просимо на google-cmd-cpu!",
+      description: "Творець XQWERTVM — копії CollabVM",
+      chooseDevice: "Оберіть пристрій",
+      computer: "💻 Комп'ютер",
+      mobile: "📱 Телефон",
+      xbox: "🎮 Xbox",
+      chooseLang: "🌍 Вибір мови:",
+      chooseBg: "🖼️ Оберіть фон:",
+      apply: "Застосувати",
+      resetBg: "Скинути фон",
+      musicOn: "🎵 Увімкнути музику",
+      goToQwertyVM: "🌐 Перейти до QwertyVM"
+    },
+    zipzizpipzpzpzpzzipzzo: {
+      welcome: "Ziz zip zop google-cmd-cpu!",
+      description: "Zip zip XQWERTVM — zop CollabVM zop",
+      chooseDevice: "Zip zop zop",
+      computer: "💻 Zop",
+      mobile: "📱 Ziz",
+      xbox: "🎮 Zup",
+      chooseLang: "🌍 Zip zop:",
+      chooseBg: "🖼️ Zup zip:",
+      apply: "Zop zop",
+      resetBg: "Zip zop zop",
+      musicOn: "🎵 Zop zop zop",
+      goToQwertyVM: "🌐 Zip zop QwertyVM"
+    }
+  };
+
+  function updateTexts(lang) {
+    const t = translations[lang] || translations['ru'];
+    document.getElementById('title').textContent = t.welcome;
+    document.getElementById('desc').textContent = t.description;
+    document.getElementById('deviceTitle').textContent = t.chooseDevice;
+    document.getElementById('btnPc').textContent = t.computer;
+    document.getElementById('btnMobile').textContent = t.mobile;
+    document.getElementById('btnXbox').textContent = t.xbox;
+    document.getElementById('langLabel').textContent = t.chooseLang;
+    document.getElementById('bgLabel').textContent = t.chooseBg;
+    document.getElementById('btnApply').textContent = t.apply;
+    document.getElementById('btnResetBg').textContent = t.resetBg;
+    document.getElementById('musicBtn').textContent = t.musicOn;
+    document.getElementById('qwertyLink').textContent = t.goToQwertyVM;
+  }
+
+  window.onload = () => {
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('deviceChoice').style.display = 'block';
+    }, 3000);
+
+    const savedBg = localStorage.getItem('customBg');
+    if(savedBg) {
+      document.body.style.backgroundImage = `url('${savedBg}')`;
+    }
+
+    const savedLang = localStorage.getItem('language') || 'ru';
+    document.getElementById('languageSelect').value = savedLang;
+    updateTexts(savedLang);
+  };
+
+  function chooseDevice(type) {
+    document.getElementById('deviceChoice').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+
+    if(type === 'pc') {
+      const yt = document.getElementById('ytMusic');
+      yt.src = 'https://www.youtube.com/embed/lRXJju5ZovI?autoplay=1&mute=0';
+      yt.style.display = 'block';
+      document.getElementById('musicControl').style.display = 'none';
+    } else {
+      document.getElementById('musicControl').style.display = 'block';
+    }
+  }
+
+  function playMusic() {
+    const yt = document.getElementById('ytMusic');
+    yt.src = 'https://www.youtube.com/embed/lRXJju5ZovI?autoplay=1';
+    yt.style.display = 'block';
+    document.getElementById('musicControl').style.display = 'none';
+  }
+
+  function changeLanguage() {
+    const lang = document.getElementById('languageSelect').value;
+    localStorage.setItem('language', lang);
+    updateTexts(lang);
+  }
+
+  function changeBackground(url) {
+    if(url) {
+      document.body.style.backgroundImage = `url('${url}')`;
+      localStorage.setItem('customBg', url);
+    } else {
+      resetBackground();
+    }
+  }
+
+  function applyCustomBackground() {
+    const url = document.getElementById('customBackground').value.trim();
+    if(url) {
+      changeBackground(url);
+    }
+  }
+
+  function resetBackground() {
+    document.body.style.backgroundImage = '';
+    localStorage.removeItem('customBg');
+  }
+</script>
+
+</body>
+          </html>
+  
