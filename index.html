@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>google-cmd-cpu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="language-selector">
+        <select onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="uk">Українська</option>
+            <option value="ru">Русский</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
+            <option value="es">Español</option>
+            <option value="zz">zipzizpipzpzpzpzzipzzo</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <h1>google-cmd-cpu</h1>
+        <p class="subtitle" data-en="Creator of XQWERTVM – a CollabVM copy"
+                           data-uk="Творець XQWERTVM – копії CollabVM"
+                           data-ru="Создатель XQWERTVM – копии CollabVM"
+                           data-fr="Créateur de XQWERTVM – une copie de CollabVM"
+                           data-de="Schöpfer von XQWERTVM – eine CollabVM-Kopie"
+                           data-pt="Criador do XQWERTVM – uma cópia do CollabVM"
+                           data-es="Creador de XQWERTVM – una copia de CollabVM"
+                           data-zz="zipzipzipzip zipzizzipzipzipzpzzipz">Создатель XQWERTVM – копии CollabVM</p>
+
+        <div class="projects">
+            <h2>💻 Проекты</h2>
+            <ul>
+                <li><a href="https://google-cmd-cpu.github.io/xqwertvm" target="_blank">XQWERTVM</a></li>
+            </ul>
+        </div>
+
+        <div class="links">
+            <h2>🔗 Ссылки</h2>
+            <ul>
+                <li><a href="https://github.com/google-cmd-cpu" target="_blank">GitHub</a></li>
+                <li><a href="https://youtube.com" target="_blank">YouTube</a></li>
+            </ul>
+        </div>
+
+        <div class="languages">
+            <h2>👑 Языки</h2>
+            <p>English, Українська, Русский, Français, Deutsch, Português, Español, zipzizpipzpzpzpzzipzzo</p>
+        </div>
+    </div>
+
+    <!-- Скрытый iframe для музыки -->
+    <iframe width="0" height="0" src="https://www.youtube.com/embed/b1njlzwX5h8?autoplay=1&loop=1&playlist=b1njlzwX5h8" frameborder="0" allow="autoplay" style="display:none;"></iframe>
+
+    <script>
+        function changeLanguage(lang) {
+            const subtitle = document.querySelector('.subtitle');
+            subtitle.textContent = subtitle.getAttribute('data-' + lang) || subtitle.getAttribute('data-en');
+        }
+    </script>
+</body>
+                                                                                 </html>
