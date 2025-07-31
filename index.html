@@ -1,173 +1,59 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>google-cmd-cpu</title>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: sans-serif;
-      background-size: cover;
-      background-position: center;
-      background-color: black;
-      color: white;
-    }
-
-    #splash {
-      position: fixed;
-      z-index: 9999;
+    body {
       background: black;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
     }
-
-    #splash img {
-      max-width: 100%;
-      height: auto;
+    #deviceChoice button {
+      font-size: 30px;
+      margin: 10px;
+      padding: 10px 20px;
     }
-
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 1rem;
-      border-radius: 10px;
+    iframe {
       display: none;
-    }
-
-    h1, h2 {
-      margin-top: 0;
-    }
-
-    select, input, button {
-      padding: 5px;
-      margin: 5px 0;
-      font-size: 16px;
-    }
-
-    iframe.chat {
-      width: 100%;
-      height: 400px;
-      border: none;
-      border-radius: 10px;
-      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Заставка -->
-  <div id="splash">
-    <img src="https://i.imgur.com/YjyjiRj.gif" alt="Loading...">
+  <h1>Добро пожаловать!</h1>
+  <p>Вы используете:</p>
+  <div id="deviceChoice">
+    <button onclick="chooseDevice('pc')">💻 Компьютер</button>
+    <button onclick="chooseDevice('mobile')">📲 Телефон</button>
   </div>
 
-  <!-- Основной сайт -->
-  <div class="container" id="mainContent">
-    <h1>google-cmd-cpu</h1>
-    <p id="subtitle">Создатель QwertyVM – копии CollabVM</p>
-
-    <h2>🌍 Язык</h2>
-    <select id="langSelect">
-      <option value="ru">Русский</option>
-      <option value="en">English</option>
-      <option value="uk">Українська</option>
-      <option value="fr">Français</option>
-      <option value="de">Deutsch</option>
-      <option value="es">Español</option>
-      <option value="pt">Português</option>
-    </select>
-
-    <h2>🖼 Фон</h2>
-    <button onclick="setBg(defaultBg)">Стандарт</button>
-    <button onclick="resetBg()">Сбросить</button><br/>
-    <input type="text" id="bgUrl" placeholder="Ваша ссылка на фон"/>
-    <button onclick="setCustomBg()">Установить</button>
-
-    <h2>💻 Проекты</h2>
-    <ul>
-      <li><a href="https://google-cmd-cpu.github.io/QwertyVM" target="_blank">QwertyVM</a></li>
-    </ul>
-
-    <h2>🔗 Ссылки</h2>
-    <ul>
-      <li><a href="https://github.com/google-cmd-cpu" target="_blank">GitHub</a></li>
-      <li><a href="https://youtube.com" target="_blank">YouTube</a></li>
-    </ul>
-
-    <h2>💬 Чат</h2>
-    <iframe class="chat" src="https://app.kosmi.io/room/@andrey7" allow="camera; microphone"></iframe>
+  <div id="musicControl" style="display:none;">
+    <button onclick="playMusic()">🎵 Включить музыку</button>
   </div>
+
+  <iframe id="ytMusic" width="0" height="0" allow="autoplay" frameborder="0"></iframe>
 
   <script>
-    const langData = {
-      ru: "Создатель QwertyVM – копии CollabVM",
-      en: "Creator of QwertyVM – a CollabVM clone",
-      uk: "Творець QwertyVM – копії CollabVM",
-      fr: "Créateur de QwertyVM – une copie de CollabVM",
-      de: "Ersteller von QwertyVM – ein CollabVM-Klon",
-      es: "Creador de QwertyVM – una copia de CollabVM",
-      pt: "Criador do QwertyVM – uma cópia do CollabVM"
-    };
-
-    const defaultBg = "https://d7hftxdivxxvm.cloudfront.net/?quality=80&resize_to=width&src=https%3A%2F%2Fartsy-media-uploads.s3.amazonaws.com%2F1E2blfmrxuSPUH-2oc08gw%252F14273043642_d63ded6c05_o%2B%25281%2529.png&width=910";
-
-    function setBg(url) {
-      document.body.style.backgroundImage = `url('${url}')`;
-      localStorage.setItem("bg", url);
+    function chooseDevice(type) {
+      document.getElementById("deviceChoice").style.display = "none";
+      const yt = document.getElementById("ytMusic");
+      if (type === "pc") {
+        yt.src = "https://www.youtube.com/embed/lRXJju5ZovI?autoplay=1&mute=0";
+        yt.style.display = "block";
+      } else {
+        document.getElementById("musicControl").style.display = "block";
+      }
     }
 
-    function resetBg() {
-      localStorage.removeItem("bg");
-      document.body.style.backgroundImage = "";
+    function playMusic() {
+      const yt = document.getElementById("ytMusic");
+      yt.src = "https://www.youtube.com/embed/lRXJju5ZovI?autoplay=1";
+      yt.style.display = "block";
     }
-
-    function setCustomBg() {
-      const url = document.getElementById("bgUrl").value;
-      if (url) setBg(url);
-    }
-
-    function changeLang(lang) {
-      document.getElementById("subtitle").textContent = langData[lang] || langData["ru"];
-      localStorage.setItem("lang", lang);
-    }
-
-    document.getElementById("langSelect").addEventListener("change", (e) => {
-      changeLang(e.target.value);
-    });
-
-    window.onload = () => {
-      // заставка скрыть
-      setTimeout(() => {
-        document.getElementById("splash").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-      }, 2500); // 2.5 сек
-
-      const savedBg = localStorage.getItem("bg");
-      if (savedBg) setBg(savedBg);
-
-      const savedLang = localStorage.getItem("lang") || "ru";
-      document.getElementById("langSelect").value = savedLang;
-      changeLang(savedLang);
-    };
   </script>
+
 </body>
-      </html>
-  <button onclick="playMusic()">🎵 Включить музыку</button>
-<iframe id="ytPlayer" width="0" height="0" frameborder="0" allow="autoplay" style="display:none"></iframe>
-
-<script>
-  function playMusic() {
-    const yt = document.getElementById("ytPlayer");
-    yt.src = "https://www.youtube.com/embed/lRXJju5ZovI?autoplay=1";
-    yt.style.display = "block";
-  }
-</script>
-
+</html>
