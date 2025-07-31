@@ -160,4 +160,14 @@
   </script>
 </body>
       </html>
-      
+  <button onclick="playMusic()">🎵 Включить музыку</button>
+<iframe id="ytPlayer" width="0" height="0" frameborder="0" allow="autoplay" style="display:none"></iframe>
+
+<script>
+  function playMusic() {
+    const yt = document.getElementById("ytPlayer");
+    yt.src = "https://www.youtube.com/embed/lRXJju5ZovI?autoplay=1";
+    yt.style.display = "block";
+  }
+</script>
+
