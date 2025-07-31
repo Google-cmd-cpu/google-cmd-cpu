@@ -1,19 +1,20 @@
-
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: #111;
+    background: url('https://d7hftxdivxxvm.cloudfront.net/?quality=80&resize_to=width&src=https%3A%2F%2Fartsy-media-uploads.s3.amazonaws.com%2F1E2blfmrxuSPUH-2oc08gw%252F14273043642_d63ded6c05_o%2B%25281%2529.png&width=910') no-repeat center center fixed;
+    background-size: cover;
     color: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
     padding: 20px;
+    backdrop-filter: blur(6px);
 }
 
 .container {
     max-width: 700px;
     text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 20px;
 }
 
 h1 {
@@ -37,4 +38,10 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+.language-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
